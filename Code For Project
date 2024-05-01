@@ -1,0 +1,42 @@
+# Function to encode message with given shift
+def caesar_cipher(message, shift):
+    encoded = ""
+    for char in message:
+        if char.isalpha():  # Check if it's an alphabetical character
+            shifted = ord(char.upper()) + shift  # Convert to uppercase and shift
+            if shifted > ord('Z'):
+                shifted -= 26  # Wrap around if past 'Z'
+            encoded += chr(shifted)
+    return encoded
+
+# Function to format the encoded message
+def format_encoded(encoded):
+    formatted = ""
+    for i in range(0, len(encoded), 5):
+        formatted += encoded[i:i+5] + " "  # Create blocks of five
+        if (i // 5 + 1) % 10 == 0 and (i + 5) < len(encoded):
+            formatted += "\n"  # Add a newline after every ten blocks
+    return formatted.strip()  # Remove trailing whitespace
+
+# Main program
+def main():
+    # Check if the shift value is provided as a command-line argument
+    if len(sys.argv) != 2:
+        print("Usage: python caesar_cipher.py <shift>")
+        sys.exit(1)
+
+    try:
+        shift = int(sys.argv[1])  # Convert shift argument to integer
+    except ValueError:
+        print("Shift value must be an integer.")
+        sys.exit(1)
+
+    for line in sys.stdin:
+        # Encode and format the message
+        encoded_message = caesar_cipher(line, shift)
+        formatted_message = format_encoded(encoded_message)
+        print(formatted_message)  # Print the formatted encoded message
+
+# Run the main program
+if __name__ == "__main__":
+    main()
